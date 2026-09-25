@@ -32,6 +32,7 @@ import {
 import { isUniqueViolation } from '../../util/dbError.js';
 import {
     buildHostedBackingDenial,
+    buildHostedSubdomainIndexUrlCandidates,
     extractPuterHostedSubdomain,
     hostedIndexUrlBackingIsUnavailable,
 } from '../../util/hostedAppBacking.js';
@@ -1171,6 +1172,17 @@ export class AppDriver extends PuterDriver {
             this.#buildEquivalentIndexUrlCandidates(indexUrl),
         );
 
+        // The same subdomain on any other hosting domain is the same site.
+        const hostedSubdomain = this.#extractPuterHostedSubdomain(indexUrl);
+        if (hostedSubdomain) {
+            for (const candidate of buildHostedSubdomainIndexUrlCandidates(
+                hostedSubdomain,
+                this.config,
+            )) {
+                candidates.add(candidate);
+            }
+        }
+
         // For alias-group hosts, treat the group as a host-level reservation:
         // any row whose index_url is the root URL of any group member counts
         // as a conflict, so a single app owns the whole group.
@@ -1451,6 +1463,12 @@ export class AppDriver extends PuterDriver {
             });
             const sourceApp = await this.appStore.getByUid(sourceAppUid);
             if (sourceApp) {
+                // The source app's sites and workers follow it into the
+                // joined row; `app_owner` cascades on delete otherwise.
+                await this.stores.subdomain.reassignAppOwner(
+                    sourceApp.id,
+                    appToJoin.id,
+                );
                 await this.appStore.delete(sourceApp.id);
                 this.#emitAppChanged({
                     app: null,

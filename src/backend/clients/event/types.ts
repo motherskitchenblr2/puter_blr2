@@ -461,6 +461,8 @@ export type EventMap = {
          * did not have it in hand, as an `expire` does not.
          */
         values?: unknown[];
+        /** Keys among `keys` private to the namespace's app. */
+        noShareKeys?: string[];
     };
     /**
      * A whole namespace was emptied. Namespace-level on purpose: `flush`'s own
@@ -850,11 +852,10 @@ export type EventKey = keyof EventMap & string;
 // Generates a wildcard for every non-final dot-separated prefix of K.
 export type WildcardPrefixes<K extends string> =
     K extends `${infer Head}.${infer Tail}`
-        ?
-              | `${Head}.*`
-              | (Tail extends `${string}.${string}`
-                    ? `${Head}.${WildcardPrefixes<Tail>}`
-                    : never)
+        ? | `${Head}.*`
+          | (Tail extends `${string}.${string}`
+                ? `${Head}.${WildcardPrefixes<Tail>}`
+                : never)
         : never;
 
 export type ListenKey = EventKey | WildcardPrefixes<EventKey>;
