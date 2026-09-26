@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.1](https://github.com/motherskitchenblr2/puter_blr2/compare/v1.0.0...v1.0.1) (2026-09-25)
+
+
+### Bug Fixes
+
+* answer a cap-lock failure as 409, like contention, per review ([8c81606](https://github.com/motherskitchenblr2/puter_blr2/commit/8c816060a3538172e37891e0a1bafed02c5e4b6a))
+* codeowners ([#3948](https://github.com/motherskitchenblr2/puter_blr2/issues/3948)) ([e6cfe8c](https://github.com/motherskitchenblr2/puter_blr2/commit/e6cfe8c492549c4c538c3075e571c646d212d135))
+* **selfhost:** configure bucket CORS in s3-init so browser uploads work ([#3934](https://github.com/motherskitchenblr2/puter_blr2/issues/3934)) ([a9ee3d1](https://github.com/motherskitchenblr2/puter_blr2/commit/a9ee3d1ea6a5a0af44d39593d9a3d0d5ee57a8e1))
+* Teams lifecycle robustness ahead of wider enablement ([0c5c1be](https://github.com/motherskitchenblr2/puter_blr2/commit/0c5c1be777b5c1f88b1863bf66e829583de2556f))
+
 ## 1.0.0 (2026-09-24)
 
 
